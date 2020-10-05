@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "689907840425",
+    "firebase_url": "https://beauty-network-boticario.firebaseio.com",
+    "project_id": "beauty-network-boticario",
+    "storage_bucket": "beauty-network-boticario.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:689907840425:android:d9b07cdbb46657e41840b8",
+        "android_client_info": {
+          "package_name": "com.example.beauty_network_boticario"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "689907840425-9af51rhamk3cs7v3qj10td8s7ji9s5ki.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCk5-B0JEyMtWXf6TRKo8wGIbvSTVuBuvo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "689907840425-9af51rhamk3cs7v3qj10td8s7ji9s5ki.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

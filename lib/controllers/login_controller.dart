@@ -1,9 +1,9 @@
+import 'package:beauty_network_boticario/models/user_model.dart';
 import 'package:beauty_network_boticario/repository/account_repository.dart';
 import 'package:beauty_network_boticario/viewmodels/login_view_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class LoginControllerInterface {
-  Future<UserCredential> login(LoginViewModel model);
+  Future<UserModel> login(LoginViewModel model);
 }
 
 class LoginController implements LoginControllerInterface {
@@ -12,8 +12,9 @@ class LoginController implements LoginControllerInterface {
   LoginController(this._accountRepository);
 
   @override
-  Future<UserCredential> login(LoginViewModel model) async {
+  Future<UserModel> login(LoginViewModel model) async {
     var user = await _accountRepository.signIn(model);
-    return user;
+    return UserModel(
+        uid: user.uid, photoURL: user.photoURL, displayName: user.displayName);
   }
 }

@@ -1,35 +1,53 @@
 import 'package:beauty_network_boticario/color_theme_swatch.dart';
-import 'package:beauty_network_boticario/controllers/login_controller.dart';
 import 'package:beauty_network_boticario/controllers/register_controller.dart';
-import 'package:beauty_network_boticario/repository/account_repository.dart';
-import 'package:beauty_network_boticario/viewmodels/login_view_model.dart';
-import 'package:beauty_network_boticario/views/register_view.dart';
+import 'package:beauty_network_boticario/viewmodels/register_view_model.dart';
 import 'package:beauty_network_boticario/widgets/custom_appbar_widget.dart';
 import 'package:flutter/material.dart';
 
-class LoginView extends StatelessWidget {
-  LoginView(this._loginController);
+class RegisterView extends StatelessWidget {
+  RegisterView(this._registerController);
 
-  final LoginControllerInterface _loginController;
+  final RegisterControllerInterface _registerController;
 
-  static final _loginFormKey = new GlobalKey<FormState>();
-  final LoginViewModel _userModel = new LoginViewModel();
+  final RegisterViewModel _userModel = new RegisterViewModel();
+  static final _registerFormKey = new GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(119, 149, 128, 1),
-      appBar: CustomAppBarWidget(title: 'Login'),
+      appBar: CustomAppBarWidget(
+        title: 'Cadastre-se',
+      ),
       body: Container(
-        alignment: Alignment.center,
         height: double.infinity,
+        alignment: Alignment.center,
         margin: EdgeInsets.all(20),
         child: Form(
-          key: _loginFormKey,
+          key: _registerFormKey,
           child: SafeArea(
             child: SingleChildScrollView(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    child: TextFormField(
+                      key: new Key('displayName-input'),
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        labelText: 'Nome',
+                      ),
+                      validator: (value) {
+                        if (value.isEmpty) return 'Nome é obrigatório';
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _userModel.displayName = value;
+                        print(value);
+                      },
+                    ),
+                  ),
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 10),
                     child: TextFormField(
@@ -69,47 +87,20 @@ class LoginView extends StatelessWidget {
                     child: RaisedButton(
                       color: Theme.of(context).primaryColorDark,
                       child: Text(
-                        'Entrar',
+                        'Cadastrar',
                         style: TextStyle(
                             fontSize: 20.0,
                             color: ColorThemeSwatch.boticarioWhite),
                       ),
                       onPressed: () {
-                        if (_loginFormKey.currentState.validate()) {
-                          _loginFormKey.currentState.save();
-                          _loginController.login(_userModel);
+                        if (_registerFormKey.currentState.validate()) {
+                          _registerFormKey.currentState.save();
+                          print(_userModel);
+                          _registerController.register(_userModel);
                         }
-
-                        return null;
                       },
                     ),
                   ),
-                  Container(
-                    width: double.infinity,
-                    child: RaisedButton(
-                      color:
-                          Theme.of(context).primaryColorDark.withOpacity(0.6),
-                      child: Text(
-                        'Cadastrar',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: ColorThemeSwatch.boticarioWhite[800],
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RegisterView(
-                              RegisterController(
-                                AccountRepository(),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  )
                 ],
               ),
             ),

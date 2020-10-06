@@ -156,11 +156,10 @@ class _LoginViewState extends State<LoginView> {
                           ),
                         ),
                         onPressed: () {
-                          setState(() {
-                            busy = true;
-                          });
-
                           if (_loginFormKey.currentState.validate()) {
+                            setState(() {
+                              busy = true;
+                            });
                             _loginFormKey.currentState.save();
                             widget._loginController
                                 .login(_userModel)

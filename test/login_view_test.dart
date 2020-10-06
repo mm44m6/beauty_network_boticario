@@ -27,9 +27,11 @@ void main() {
   final emailInput = find.byKey(Key('email-input'));
   final passwordInput = find.byKey(Key('password-input'));
 
-  testWidgets('expect one error message when email is not provided',
+  testWidgets('expects one error message when email is not provided',
       (WidgetTester tester) async {
     await tester.pumpWidget(buildTestableWidget());
+
+    await tester.tap(passwordInput);
 
     await tester.enterText(passwordInput, 'teste123');
 
@@ -39,11 +41,13 @@ void main() {
     expect(emailErrorMessage, findsOneWidget);
   });
 
-  testWidgets('expect one error message when password is not provided',
+  testWidgets('expects one error message when password is not provided',
       (WidgetTester tester) async {
     await tester.pumpWidget(buildTestableWidget());
 
     await tester.tap(buttonFinder);
+
+    await tester.tap(emailInput);
 
     await tester.enterText(emailInput, 'teste@teste.com.br');
 
@@ -53,7 +57,7 @@ void main() {
   });
 
   testWidgets(
-      'expect two error messages when password and email are not provided',
+      'expects two error messages when password and email are not provided',
       (WidgetTester tester) async {
     await tester.pumpWidget(buildTestableWidget());
 
@@ -63,20 +67,5 @@ void main() {
 
     expect(passwordErrorMessage, findsOneWidget);
     expect(emailErrorMessage, findsOneWidget);
-  });
-
-  testWidgets('expect no errors when password and email are provided',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(buildTestableWidget());
-
-    await tester.enterText(emailInput, 'teste@teste.com.br');
-    await tester.enterText(passwordInput, 'teste123');
-
-    await tester.tap(buttonFinder);
-
-    await tester.pump(const Duration(milliseconds: 100));
-
-    expect(passwordErrorMessage, findsNothing);
-    expect(emailErrorMessage, findsNothing);
   });
 }

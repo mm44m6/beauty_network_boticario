@@ -171,11 +171,13 @@ class _RegisterViewState extends State<RegisterView> {
                               color: ColorThemeSwatch.boticarioWhite),
                         ),
                         onPressed: () {
-                          setState(() {
-                            busy = true;
-                          });
                           if (RegisterView._registerFormKey.currentState
                               .validate()) {
+                            setState(
+                              () {
+                                busy = true;
+                              },
+                            );
                             RegisterView._registerFormKey.currentState.save();
                             print(_userModel);
                             widget._registerController

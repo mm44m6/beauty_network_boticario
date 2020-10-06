@@ -1,34 +1,29 @@
 import 'dart:io';
 
 import 'package:beauty_network_boticario/color_theme_swatch.dart';
-
 import 'package:beauty_network_boticario/controllers/login_controller.dart';
 import 'package:beauty_network_boticario/controllers/register_controller.dart';
-
 import 'package:beauty_network_boticario/repository/account_repository.dart';
-
-import 'package:beauty_network_boticario/viewmodels/login_view_model.dart';
-
-import 'package:beauty_network_boticario/views/register_view.dart';
-
+import 'package:beauty_network_boticario/viewmodels/register_view_model.dart';
+import 'package:beauty_network_boticario/views/login_view.dart';
 import 'package:beauty_network_boticario/widgets/custom_appbar_widget.dart';
 import 'package:beauty_network_boticario/widgets/loading_widget.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class LoginView extends StatefulWidget {
-  LoginView(this._loginController);
+class RegisterView extends StatefulWidget {
+  RegisterView(this._registerController);
 
-  final LoginControllerInterface _loginController;
+  final RegisterControllerInterface _registerController;
+
+  static final _registerFormKey = new GlobalKey<FormState>();
 
   @override
-  _LoginViewState createState() => _LoginViewState();
+  _RegisterViewState createState() => _RegisterViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
-  final LoginViewModel _userModel = new LoginViewModel();
-  static final _loginFormKey = new GlobalKey<FormState>();
+class _RegisterViewState extends State<RegisterView> {
+  final RegisterViewModel _userModel = new RegisterViewModel();
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool busy;
 
@@ -36,8 +31,8 @@ class _LoginViewState extends State<LoginView> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => RegisterView(
-          RegisterController(
+        builder: (context) => LoginView(
+          LoginController(
             AccountRepository(),
           ),
         ),
@@ -61,7 +56,7 @@ class _LoginViewState extends State<LoginView> {
       showDialog(
         context: context,
         builder: (BuildContext context) => new CupertinoAlertDialog(
-          title: new Text("Erro no login"),
+          title: new Text("Erro no cadastro"),
           content: new Text("$error"),
           actions: <Widget>[
             CupertinoDialogAction(
@@ -97,19 +92,40 @@ class _LoginViewState extends State<LoginView> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Color.fromRGBO(119, 149, 128, 1),
-      appBar: CustomAppBarWidget(title: 'Login'),
+      appBar: CustomAppBarWidget(
+        title: 'Cadastre-se',
+      ),
       body: Container(
-        alignment: Alignment.center,
         height: double.infinity,
+        alignment: Alignment.center,
         margin: EdgeInsets.all(20),
         child: Form(
-          key: _loginFormKey,
+          key: RegisterView._registerFormKey,
           child: SafeArea(
             child: LoadingWidget(
               busy: busy,
               child: SingleChildScrollView(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      child: TextFormField(
+                        key: new Key('displayName-input'),
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          labelText: 'Nome',
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty) return 'Nome é obrigatório';
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _userModel.displayName = value;
+                          print(value);
+                        },
+                      ),
+                    ),
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 10),
                       child: TextFormField(
@@ -149,53 +165,30 @@ class _LoginViewState extends State<LoginView> {
                       child: RaisedButton(
                         color: Theme.of(context).primaryColorDark,
                         child: Text(
-                          'Entrar',
+                          'Cadastrar',
                           style: TextStyle(
-                            fontSize: 20.0,
-                            color: ColorThemeSwatch.boticarioWhite,
-                          ),
+                              fontSize: 20.0,
+                              color: ColorThemeSwatch.boticarioWhite),
                         ),
                         onPressed: () {
-                          if (_loginFormKey.currentState.validate()) {
-                            setState(() {
-                              busy = true;
-                            });
-                            _loginFormKey.currentState.save();
-                            widget._loginController
-                                .login(_userModel)
+                          if (RegisterView._registerFormKey.currentState
+                              .validate()) {
+                            setState(
+                              () {
+                                busy = true;
+                              },
+                            );
+                            RegisterView._registerFormKey.currentState.save();
+                            print(_userModel);
+                            widget._registerController
+                                .register(_userModel)
                                 .then((_) => _onSuccess())
-                                .catchError((err) => _onError(err))
+                                .catchError((error) => _onError(error))
                                 .whenComplete(() => _onComplete());
                           }
                         },
                       ),
                     ),
-                    Container(
-                      width: double.infinity,
-                      child: RaisedButton(
-                        color:
-                            Theme.of(context).primaryColorDark.withOpacity(0.6),
-                        child: Text(
-                          'Cadastrar',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: ColorThemeSwatch.boticarioWhite[800],
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RegisterView(
-                                RegisterController(
-                                  AccountRepository(),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    )
                   ],
                 ),
               ),

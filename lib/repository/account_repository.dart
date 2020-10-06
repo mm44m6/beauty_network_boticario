@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart' as _firebaseAuth;
 
 abstract class AccountRepositoryInterface {
-  Future<_firebaseAuth.User> signIn(model);
+  Future<_firebaseAuth.User> login(model);
   Future<_firebaseAuth.User> register(model);
 }
 
 class AccountRepository implements AccountRepositoryInterface {
-  Future<_firebaseAuth.User> signIn(model) async {
+  Future<_firebaseAuth.User> login(model) async {
     try {
       _firebaseAuth.UserCredential userCredential =
           await _firebaseAuth.FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -16,7 +16,7 @@ class AccountRepository implements AccountRepositoryInterface {
 
       return userCredential.user;
     } on _firebaseAuth.FirebaseAuthException catch (e) {
-      return Future.error(e.code);
+      return Future.error(e.message);
     }
   }
 

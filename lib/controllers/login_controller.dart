@@ -13,7 +13,7 @@ class LoginController implements LoginControllerInterface {
 
   @override
   Future<UserModel> login(LoginViewModel model) async {
-    var user = await _accountRepository.signIn(model);
+    var user = await _accountRepository.login(model);
     return UserModel(
         uid: user.uid, photoURL: user.photoURL, displayName: user.displayName);
   }

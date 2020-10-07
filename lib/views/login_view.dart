@@ -13,6 +13,7 @@ import 'package:beauty_network_boticario/views/register_view.dart';
 
 import 'package:beauty_network_boticario/widgets/custom_appbar_widget.dart';
 import 'package:beauty_network_boticario/widgets/loading_widget.dart';
+import 'package:beauty_network_boticario/widgets/navigation_bar_widget.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,15 +34,9 @@ class _LoginViewState extends State<LoginView> {
   bool busy;
 
   void _onSuccess() {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
-        builder: (context) => RegisterView(
-          RegisterController(
-            AccountRepository(),
-          ),
-        ),
-      ),
+      MaterialPageRoute(builder: (context) => HomeNavigationBarWidget()),
     );
   }
 

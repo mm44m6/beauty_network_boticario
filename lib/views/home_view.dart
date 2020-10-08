@@ -20,21 +20,16 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   Future<QuerySnapshot> posts;
 
-  void _handleChanges() {
-    setState(() {
-      posts = widget._homeController.getRecentPosts();
-    });
-  }
-
   @override
   void initState() {
     posts = widget._homeController.getRecentPosts();
     super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  void _handleChanges() {
+    setState(() {
+      posts = widget._homeController.getRecentPosts();
+    });
   }
 
   @override
@@ -51,7 +46,7 @@ class _HomeViewState extends State<HomeView> {
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -81,7 +76,6 @@ class _HomeViewState extends State<HomeView> {
                     }
 
                     if (snapshot.hasData) {
-                      print(snapshot.data.docs);
                       return new Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         child: ListView(

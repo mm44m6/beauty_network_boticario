@@ -2,15 +2,15 @@ class UserModel {
   String uid;
   String displayName;
   String email;
-  String photoURL;
+  String profilePicture;
 
-  UserModel({this.uid, this.displayName, this.email, this.photoURL});
+  UserModel({this.uid, this.displayName, this.email, this.profilePicture});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];
-    displayName = json['displayName'];
+    displayName = json['name'];
     email = json['email'];
-    photoURL = json['photoURL'];
+    profilePicture = json['profile_picture'];
   }
 
   Map<String, dynamic> toJson() {
@@ -18,7 +18,7 @@ class UserModel {
     data['uid'] = this.uid;
     data['displayName'] = this.displayName;
     data['email'] = this.email;
-    data['photoURL'] = this.photoURL;
+    data['profile_picture'] = this.profilePicture;
     return data;
   }
 }

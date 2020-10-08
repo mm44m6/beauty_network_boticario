@@ -17,16 +17,21 @@ class RegisterView extends StatefulWidget {
 
   final RegisterControllerInterface _registerController;
 
-  static final _registerFormKey = new GlobalKey<FormState>();
-
   @override
   _RegisterViewState createState() => _RegisterViewState();
 }
 
 class _RegisterViewState extends State<RegisterView> {
   final RegisterViewModel _userModel = new RegisterViewModel();
-  final _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final _registerScaffoldKey = new GlobalKey<ScaffoldState>();
+  GlobalKey<FormState> _registerFormKey = new GlobalKey<FormState>();
   bool busy;
+
+  @override
+  void initState() {
+    busy = false;
+    super.initState();
+  }
 
   void _onSuccess(store, user) {
     _setUserStore(store, user);
@@ -40,7 +45,7 @@ class _RegisterViewState extends State<RegisterView> {
     store.setUser(
       user.displayName,
       user.email,
-      user.photoURL,
+      user.profilePicture,
       user.uid,
     );
   }
@@ -58,7 +63,7 @@ class _RegisterViewState extends State<RegisterView> {
           style: TextStyle(color: ColorThemeSwatch.boticarioWhite),
         ),
       );
-      _scaffoldKey.currentState.showSnackBar(snackbar);
+      _registerScaffoldKey.currentState.showSnackBar(snackbar);
     }
 
     if (Platform.isIOS) {
@@ -80,22 +85,11 @@ class _RegisterViewState extends State<RegisterView> {
   }
 
   @override
-  void initState() {
-    busy = false;
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     UserStore _userStore = Provider.of<UserStore>(context);
 
     return Scaffold(
-      key: _scaffoldKey,
+      key: _registerScaffoldKey,
       backgroundColor: Color.fromRGBO(119, 149, 128, 1),
       appBar: CustomAppBarWidget(
         title: 'Cadastre-se',
@@ -105,7 +99,7 @@ class _RegisterViewState extends State<RegisterView> {
         alignment: Alignment.center,
         margin: EdgeInsets.all(20),
         child: Form(
-          key: RegisterView._registerFormKey,
+          key: _registerFormKey,
           child: SafeArea(
             child: LoadingWidget(
               busy: busy,
@@ -127,7 +121,6 @@ class _RegisterViewState extends State<RegisterView> {
                         },
                         onSaved: (value) {
                           _userModel.displayName = value;
-                          print(value);
                         },
                       ),
                     ),
@@ -176,15 +169,14 @@ class _RegisterViewState extends State<RegisterView> {
                               color: ColorThemeSwatch.boticarioWhite),
                         ),
                         onPressed: () async {
-                          if (RegisterView._registerFormKey.currentState
-                              .validate()) {
+                          if (_registerFormKey.currentState.validate()) {
                             setState(
                               () {
                                 busy = true;
                               },
                             );
 
-                            RegisterView._registerFormKey.currentState.save();
+                            _registerFormKey.currentState.save();
 
                             try {
                               UserModel user = await widget._registerController

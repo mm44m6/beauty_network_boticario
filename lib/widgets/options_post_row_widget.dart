@@ -17,22 +17,23 @@ class PostOptionsRowWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 2),
+      padding: EdgeInsets.symmetric(horizontal: 0),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: IconButton(
-              icon: Icon(Icons.edit, size: 20),
-              onPressed: () => enterEditState(),
-            ),
+          IconButton(
+            padding: EdgeInsets.all(0),
+            icon: Icon(Icons.edit, size: 16),
+            onPressed: () => enterEditState(),
           ),
           IconButton(
+            padding: EdgeInsets.all(0),
             onPressed: () => {
               _homeController.deletePost(documentId),
               handleChanges(),
             },
-            icon: Icon(Icons.delete, size: 20),
+            icon: Icon(Icons.delete, size: 16),
           )
         ],
       ),

@@ -11,7 +11,7 @@ abstract class _UserStore with Store {
   String email = "";
 
   @observable
-  String photoURL = "https://placehold.it/200";
+  String profilePicture = "https://placehold.it/200";
 
   @observable
   String uid = "";
@@ -20,12 +20,12 @@ abstract class _UserStore with Store {
   void setUser(
     String pDisplayName,
     String pEmail,
-    String pPhotoURL,
+    String pProfilePicture,
     String pUid,
   ) {
     displayName = pDisplayName;
     email = pEmail;
-    photoURL = pPhotoURL;
+    profilePicture = pProfilePicture;
     uid = pUid;
   }
 }

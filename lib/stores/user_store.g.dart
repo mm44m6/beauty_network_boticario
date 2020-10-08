@@ -39,18 +39,18 @@ mixin _$UserStore on _UserStore, Store {
     });
   }
 
-  final _$photoURLAtom = Atom(name: '_UserStore.photoURL');
+  final _$profilePictureAtom = Atom(name: '_UserStore.profilePicture');
 
   @override
-  String get photoURL {
-    _$photoURLAtom.reportRead();
-    return super.photoURL;
+  String get profilePicture {
+    _$profilePictureAtom.reportRead();
+    return super.profilePicture;
   }
 
   @override
-  set photoURL(String value) {
-    _$photoURLAtom.reportWrite(value, super.photoURL, () {
-      super.photoURL = value;
+  set profilePicture(String value) {
+    _$profilePictureAtom.reportWrite(value, super.profilePicture, () {
+      super.profilePicture = value;
     });
   }
 
@@ -73,11 +73,11 @@ mixin _$UserStore on _UserStore, Store {
 
   @override
   void setUser(
-      String pDisplayName, String pEmail, String pPhotoURL, String pUid) {
+      String pDisplayName, String pEmail, String pProfilePicture, String pUid) {
     final _$actionInfo =
         _$_UserStoreActionController.startAction(name: '_UserStore.setUser');
     try {
-      return super.setUser(pDisplayName, pEmail, pPhotoURL, pUid);
+      return super.setUser(pDisplayName, pEmail, pProfilePicture, pUid);
     } finally {
       _$_UserStoreActionController.endAction(_$actionInfo);
     }
@@ -88,7 +88,7 @@ mixin _$UserStore on _UserStore, Store {
     return '''
 displayName: ${displayName},
 email: ${email},
-photoURL: ${photoURL},
+profilePicture: ${profilePicture},
 uid: ${uid}
     ''';
   }

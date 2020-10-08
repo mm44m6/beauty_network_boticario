@@ -26,9 +26,15 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final LoginViewModel _userModel = new LoginViewModel();
-  static final _loginFormKey = new GlobalKey<FormState>();
-  final _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final _loginScaffoldKey = new GlobalKey<ScaffoldState>();
+  GlobalKey<FormState> _loginFormKey = new GlobalKey<FormState>();
   bool busy;
+
+  @override
+  void initState() {
+    busy = false;
+    super.initState();
+  }
 
   void _onSuccess(store, user) {
     _setUserStore(store, user);
@@ -42,7 +48,7 @@ class _LoginViewState extends State<LoginView> {
     store.setUser(
       user.displayName,
       user.email,
-      user.photoURL,
+      user.profilePicture,
       user.uid,
     );
   }
@@ -60,7 +66,7 @@ class _LoginViewState extends State<LoginView> {
           style: TextStyle(color: ColorThemeSwatch.boticarioWhite),
         ),
       );
-      _scaffoldKey.currentState.showSnackBar(snackbar);
+      _loginScaffoldKey.currentState.showSnackBar(snackbar);
     }
 
     if (Platform.isIOS) {
@@ -82,22 +88,11 @@ class _LoginViewState extends State<LoginView> {
   }
 
   @override
-  void initState() {
-    busy = false;
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     UserStore _userStore = Provider.of<UserStore>(context);
 
     return Scaffold(
-      key: _scaffoldKey,
+      key: _loginScaffoldKey,
       backgroundColor: Color.fromRGBO(119, 149, 128, 1),
       appBar: CustomAppBarWidget(title: 'Login'),
       body: Container(

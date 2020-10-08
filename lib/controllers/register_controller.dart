@@ -15,6 +15,8 @@ class RegisterController implements RegisterControllerInterface {
   Future<UserModel> register(RegisterViewModel model) async {
     var user = await _accountRepository.register(model);
     return UserModel(
-        uid: user.uid, photoURL: user.photoURL, displayName: user.displayName);
+        uid: user.uid,
+        profilePicture: user.photoURL,
+        displayName: user.displayName);
   }
 }

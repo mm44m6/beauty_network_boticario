@@ -31,11 +31,6 @@ class _HomePostCardWidgetState extends State<HomePostCardWidget> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   void _enterEditState() {
     setState(() {
       _isEditingStateActive = true;
@@ -55,8 +50,9 @@ class _HomePostCardWidgetState extends State<HomePostCardWidget> {
     timeago.setLocaleMessages('pt_BR', timeago.PtBrMessages());
 
     return Card(
+      margin: EdgeInsets.symmetric(vertical: 6),
       child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(8),
         child: _isEditingStateActive
             ? EditPostWidget(
                 widget._homeController,
@@ -68,27 +64,31 @@ class _HomePostCardWidgetState extends State<HomePostCardWidget> {
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(widget.document.data()['user_displayName'],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 6),
+                        child: Text(widget.document.data()['user_displayName'],
                             style: Theme.of(context).textTheme.subtitle2),
-                        _verifyPostOwnership()
-                      ],
-                    ),
+                      ),
+                      _verifyPostOwnership()
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 5),
+                    child: Text(widget.document.data()['text'],
+                        style: TextStyle(fontSize: 16)),
                   ),
                   Padding(
                     padding: EdgeInsets.only(bottom: 10),
-                    child: Text(widget.document.data()['text']),
-                  ),
-                  Text(
-                    timeago.format(
-                      widget.document.data()['date'].toDate(),
-                      locale: 'pt_BR',
+                    child: Text(
+                      timeago.format(
+                        widget.document.data()['date'].toDate(),
+                        locale: 'pt_BR',
+                      ),
+                      style: Theme.of(context).textTheme.caption,
                     ),
-                    style: Theme.of(context).textTheme.caption,
                   ),
                 ],
               ),
@@ -98,10 +98,12 @@ class _HomePostCardWidgetState extends State<HomePostCardWidget> {
 
   Widget _verifyPostOwnership() {
     if (widget.document.data()['user_uid'] == widget.user.uid)
-      return PostOptionsRowWidget(widget._homeController,
-          documentId: widget.document.id,
-          handleChanges: widget.handleChanges,
-          enterEditState: _enterEditState);
+      return PostOptionsRowWidget(
+        widget._homeController,
+        documentId: widget.document.id,
+        handleChanges: widget.handleChanges,
+        enterEditState: _enterEditState,
+      );
     return Container();
   }
 }

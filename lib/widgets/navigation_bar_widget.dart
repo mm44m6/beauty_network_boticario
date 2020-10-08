@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:beauty_network_boticario/controllers/home_controller.dart';
-import 'package:beauty_network_boticario/views/create_post_view.dart';
 import 'package:beauty_network_boticario/views/home_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +15,6 @@ class _HomeNavigationBarWidgetState extends State<HomeNavigationBarWidget> {
   int _currentView = 0;
   final List<Widget> _views = [
     HomeView(HomeController()),
-    CreatePostView(),
   ];
 
   @override
@@ -30,10 +28,6 @@ class _HomeNavigationBarWidgetState extends State<HomeNavigationBarWidget> {
           new BottomNavigationBarItem(
             icon: Icon(Platform.isIOS ? CupertinoIcons.home : Icons.home),
             title: Text('Inicio'),
-          ),
-          new BottomNavigationBarItem(
-            icon: Icon(Platform.isIOS ? CupertinoIcons.create : Icons.notes),
-            title: Text('Escrever'),
           ),
           new BottomNavigationBarItem(
             icon: Icon(

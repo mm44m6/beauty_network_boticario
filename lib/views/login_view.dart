@@ -1,22 +1,19 @@
 import 'dart:io';
 
 import 'package:beauty_network_boticario/color_theme_swatch.dart';
-
 import 'package:beauty_network_boticario/controllers/login_controller.dart';
 import 'package:beauty_network_boticario/controllers/register_controller.dart';
-
+import 'package:beauty_network_boticario/models/user_model.dart';
 import 'package:beauty_network_boticario/repository/account_repository.dart';
-
+import 'package:beauty_network_boticario/stores/user_store.dart';
 import 'package:beauty_network_boticario/viewmodels/login_view_model.dart';
-
 import 'package:beauty_network_boticario/views/register_view.dart';
-
 import 'package:beauty_network_boticario/widgets/custom_appbar_widget.dart';
 import 'package:beauty_network_boticario/widgets/loading_widget.dart';
 import 'package:beauty_network_boticario/widgets/navigation_bar_widget.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginView extends StatefulWidget {
   LoginView(this._loginController);
@@ -33,14 +30,28 @@ class _LoginViewState extends State<LoginView> {
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool busy;
 
-  void _onSuccess() {
+  void _onSuccess(store, user) {
+    _setUserStore(store, user);
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => HomeNavigationBarWidget()),
     );
   }
 
+  void _setUserStore(store, user) {
+    store.setUser(
+      user.displayName,
+      user.email,
+      user.photoURL,
+      user.uid,
+    );
+  }
+
   void _onError(error) {
+    setState(() {
+      busy = false;
+    });
+
     if (Platform.isAndroid) {
       var snackbar = SnackBar(
         backgroundColor: Theme.of(context).accentColor,
@@ -70,12 +81,6 @@ class _LoginViewState extends State<LoginView> {
     }
   }
 
-  void _onComplete() {
-    setState(() {
-      busy = false;
-    });
-  }
-
   @override
   void initState() {
     busy = false;
@@ -89,6 +94,8 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    UserStore _userStore = Provider.of<UserStore>(context);
+
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Color.fromRGBO(119, 149, 128, 1),
@@ -150,17 +157,19 @@ class _LoginViewState extends State<LoginView> {
                             color: ColorThemeSwatch.boticarioWhite,
                           ),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           if (_loginFormKey.currentState.validate()) {
                             setState(() {
                               busy = true;
                             });
                             _loginFormKey.currentState.save();
-                            widget._loginController
-                                .login(_userModel)
-                                .then((_) => _onSuccess())
-                                .catchError((err) => _onError(err))
-                                .whenComplete(() => _onComplete());
+                            try {
+                              UserModel user = await widget._loginController
+                                  .login(_userModel);
+                              _onSuccess(_userStore, user);
+                            } catch (error) {
+                              _onError(error);
+                            }
                           }
                         },
                       ),

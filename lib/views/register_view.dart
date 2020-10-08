@@ -2,12 +2,15 @@ import 'dart:io';
 
 import 'package:beauty_network_boticario/color_theme_swatch.dart';
 import 'package:beauty_network_boticario/controllers/register_controller.dart';
+import 'package:beauty_network_boticario/models/user_model.dart';
+import 'package:beauty_network_boticario/stores/user_store.dart';
 import 'package:beauty_network_boticario/viewmodels/register_view_model.dart';
 import 'package:beauty_network_boticario/widgets/custom_appbar_widget.dart';
 import 'package:beauty_network_boticario/widgets/loading_widget.dart';
 import 'package:beauty_network_boticario/widgets/navigation_bar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RegisterView extends StatefulWidget {
   RegisterView(this._registerController);
@@ -25,14 +28,28 @@ class _RegisterViewState extends State<RegisterView> {
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool busy;
 
-  void _onSuccess() {
+  void _onSuccess(store, user) {
+    _setUserStore(store, user);
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => HomeNavigationBarWidget()),
     );
   }
 
+  void _setUserStore(store, user) {
+    store.setUser(
+      user.displayName,
+      user.email,
+      user.photoURL,
+      user.uid,
+    );
+  }
+
   void _onError(error) {
+    setState(() {
+      busy = false;
+    });
+
     if (Platform.isAndroid) {
       var snackbar = SnackBar(
         backgroundColor: Theme.of(context).accentColor,
@@ -62,12 +79,6 @@ class _RegisterViewState extends State<RegisterView> {
     }
   }
 
-  void _onComplete() {
-    setState(() {
-      busy = false;
-    });
-  }
-
   @override
   void initState() {
     busy = false;
@@ -81,6 +92,8 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
+    UserStore _userStore = Provider.of<UserStore>(context);
+
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Color.fromRGBO(119, 149, 128, 1),
@@ -162,7 +175,7 @@ class _RegisterViewState extends State<RegisterView> {
                               fontSize: 20.0,
                               color: ColorThemeSwatch.boticarioWhite),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           if (RegisterView._registerFormKey.currentState
                               .validate()) {
                             setState(
@@ -170,13 +183,16 @@ class _RegisterViewState extends State<RegisterView> {
                                 busy = true;
                               },
                             );
+
                             RegisterView._registerFormKey.currentState.save();
-                            print(_userModel);
-                            widget._registerController
-                                .register(_userModel)
-                                .then((_) => _onSuccess())
-                                .catchError((error) => _onError(error))
-                                .whenComplete(() => _onComplete());
+
+                            try {
+                              UserModel user = await widget._registerController
+                                  .register(_userModel);
+                              _onSuccess(_userStore, user);
+                            } catch (error) {
+                              _onError(error);
+                            }
                           }
                         },
                       ),

@@ -27,4 +27,4 @@ A maioria dos testes são testes de widgets, e estou utilizando Mockito para moc
 
 A splashscreen foi feita utilizando as ferramentas nativas de splashscreen especificas de cada plataforma. :) (Falando em splashcreen, nela tem minha dog que é a Cookie).
 
-**Os APKs estão na pasta android_dist na raiz do projeto. **
+**Os APKs estão na pasta android_dist na raiz do projeto.**

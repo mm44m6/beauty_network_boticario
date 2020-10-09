@@ -1,11 +1,9 @@
+import 'package:beauty_network_boticario/common/validator.dart';
 import 'package:beauty_network_boticario/controllers/register_controller.dart';
-import 'package:beauty_network_boticario/viewmodels/register_view_model.dart';
 import 'package:beauty_network_boticario/views/register_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-
-class MockRegisterViewModel extends Mock implements RegisterViewModel {}
 
 class MockRegisterController extends Mock implements RegisterController {}
 
@@ -14,9 +12,7 @@ void main() {
     return MediaQuery(
       data: MediaQueryData(),
       child: MaterialApp(
-        home: RegisterView(
-          MockRegisterController(),
-        ),
+        home: RegisterView(MockRegisterController(), Validator()),
       ),
     );
   }

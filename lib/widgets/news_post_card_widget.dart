@@ -14,24 +14,45 @@ class NewsPostCardWidget extends StatelessWidget {
       child: Card(
         child: Padding(
           padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
             children: [
-              Text(post.user.displayName,
-                  style: Theme.of(context).textTheme.subtitle2),
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(post.content, style: TextStyle(fontSize: 16)),
-                  )
-                ],
-              ),
-              Text(
-                timeago.format(
-                  DateTime.parse(post.createdAt).toLocal(),
-                  locale: 'pt_BR',
+              Padding(
+                padding: EdgeInsets.only(right: 10),
+                child: Container(
+                  height: 60.0,
+                  width: 60.0,
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(50))),
+                  child: Image.network(
+                    'https://itaquagardenshopping.com.br/wp-content/uploads/2016/04/BOTICARIO.png',
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                style: Theme.of(context).textTheme.caption,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(post.user.displayName,
+                        style: Theme.of(context).textTheme.subtitle2),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(post.content,
+                              style: TextStyle(fontSize: 16)),
+                        )
+                      ],
+                    ),
+                    Text(
+                      timeago.format(
+                        DateTime.parse(post.createdAt).toLocal(),
+                        locale: 'pt_BR',
+                      ),
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

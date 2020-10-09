@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:beauty_network_boticario/color_theme_swatch.dart';
+import 'package:beauty_network_boticario/common/validator.dart';
 import 'package:beauty_network_boticario/controllers/login_controller.dart';
 import 'package:beauty_network_boticario/controllers/register_controller.dart';
 import 'package:beauty_network_boticario/models/user_model.dart';
@@ -16,9 +17,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class LoginView extends StatefulWidget {
-  LoginView(this._loginController);
+  LoginView(this._loginController, this._validator);
 
   final LoginControllerInterface _loginController;
+  final ValidatorInterface _validator;
 
   @override
   _LoginViewState createState() => _LoginViewState();
@@ -116,6 +118,9 @@ class _LoginViewState extends State<LoginView> {
                           labelText: 'E-mail',
                         ),
                         validator: (value) {
+                          if (value.isNotEmpty &&
+                              !widget._validator.isEmailValid(value))
+                            return 'Esse e-mail não é valido';
                           if (value.isEmpty) return 'E-mail é obrigatório';
                           return null;
                         },
@@ -189,6 +194,7 @@ class _LoginViewState extends State<LoginView> {
                                 RegisterController(
                                   AccountRepository(),
                                 ),
+                                Validator(),
                               ),
                             ),
                           );

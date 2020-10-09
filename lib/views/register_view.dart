@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:beauty_network_boticario/color_theme_swatch.dart';
+import 'package:beauty_network_boticario/common/validator.dart';
 import 'package:beauty_network_boticario/controllers/register_controller.dart';
 import 'package:beauty_network_boticario/models/user_model.dart';
 import 'package:beauty_network_boticario/stores/user_store.dart';
@@ -13,9 +14,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class RegisterView extends StatefulWidget {
-  RegisterView(this._registerController);
+  RegisterView(this._registerController, this._validator);
 
   final RegisterControllerInterface _registerController;
+  final ValidatorInterface _validator;
 
   @override
   _RegisterViewState createState() => _RegisterViewState();
@@ -133,6 +135,9 @@ class _RegisterViewState extends State<RegisterView> {
                           labelText: 'E-mail',
                         ),
                         validator: (value) {
+                          if (value.isNotEmpty &&
+                              !widget._validator.isEmailValid(value))
+                            return 'Esse e-mail não é valido';
                           if (value.isEmpty) return 'E-mail é obrigatório';
                           return null;
                         },

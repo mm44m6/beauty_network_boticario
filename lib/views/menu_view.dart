@@ -1,3 +1,4 @@
+import 'package:beauty_network_boticario/common/validator.dart';
 import 'package:beauty_network_boticario/controllers/login_controller.dart';
 import 'package:beauty_network_boticario/repository/account_repository.dart';
 import 'package:beauty_network_boticario/stores/user_store.dart';
@@ -24,8 +25,7 @@ class MenuView extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) => LoginView(
-                  LoginController(AccountRepository()),
-                ),
+                    LoginController(AccountRepository()), Validator()),
               ),
               (Route<dynamic> route) => false,
             );

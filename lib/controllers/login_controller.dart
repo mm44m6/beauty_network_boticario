@@ -4,7 +4,6 @@ import 'package:beauty_network_boticario/viewmodels/login_view_model.dart';
 
 abstract class LoginControllerInterface {
   Future<UserModel> login(LoginViewModel model);
-  Future<UserModel> logout();
 }
 
 class LoginController implements LoginControllerInterface {
@@ -20,6 +19,4 @@ class LoginController implements LoginControllerInterface {
         profilePicture: user.photoURL,
         displayName: user.displayName);
   }
-
-  Future<UserModel> logout() async {}
 }

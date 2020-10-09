@@ -9,15 +9,17 @@ import 'package:beauty_network_boticario/viewmodels/register_view_model.dart';
 import 'package:beauty_network_boticario/widgets/custom_appbar_widget.dart';
 import 'package:beauty_network_boticario/widgets/loading_widget.dart';
 import 'package:beauty_network_boticario/widgets/navigation_bar_widget.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 
 class RegisterView extends StatefulWidget {
-  RegisterView(this._registerController, this._validator);
-
   final RegisterControllerInterface _registerController;
   final ValidatorInterface _validator;
+
+  RegisterView(this._registerController, this._validator);
 
   @override
   _RegisterViewState createState() => _RegisterViewState();

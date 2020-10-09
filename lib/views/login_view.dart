@@ -17,10 +17,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class LoginView extends StatefulWidget {
-  LoginView(this._loginController, this._validator);
-
   final LoginControllerInterface _loginController;
   final ValidatorInterface _validator;
+
+  LoginView(this._loginController, this._validator);
 
   @override
   _LoginViewState createState() => _LoginViewState();

@@ -2,7 +2,7 @@ import 'package:beauty_network_boticario/color_theme_swatch.dart';
 import 'package:beauty_network_boticario/controllers/home_controller.dart';
 import 'package:beauty_network_boticario/stores/user_store.dart';
 import 'package:beauty_network_boticario/viewmodels/create_post_view_model.dart';
-import 'package:beauty_network_boticario/widgets/post_text_form_field.dart';
+import 'package:beauty_network_boticario/widgets/post_text_form_field_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +30,7 @@ class CreatePostWidget extends StatelessWidget {
         children: <Widget>[
           Form(
             key: _createNewPostFormKey,
-            child: PostTextFormField(
+            child: PostTextFormFieldWidget(
               textEditingController: _textEditingController,
               onSavedFunction: (value) => {_postModel.text = value},
             ),

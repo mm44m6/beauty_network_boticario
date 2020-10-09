@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class PostTextFormField extends StatelessWidget {
+class PostTextFormFieldWidget extends StatelessWidget {
   final TextEditingController textEditingController;
   final Function onSavedFunction;
 
-  PostTextFormField({this.textEditingController, this.onSavedFunction});
+  PostTextFormFieldWidget({this.textEditingController, this.onSavedFunction});
 
   @override
   Widget build(BuildContext context) {

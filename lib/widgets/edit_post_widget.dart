@@ -1,5 +1,5 @@
 import 'package:beauty_network_boticario/controllers/home_controller.dart';
-import 'package:beauty_network_boticario/widgets/post_text_form_field.dart';
+import 'package:beauty_network_boticario/widgets/post_text_form_field_widget.dart';
 import 'package:flutter/material.dart';
 
 class EditPostWidget extends StatelessWidget {
@@ -22,7 +22,7 @@ class EditPostWidget extends StatelessWidget {
       children: [
         Form(
           key: _editPostFormKey,
-          child: PostTextFormField(
+          child: PostTextFormFieldWidget(
             textEditingController: textEditingController,
             onSavedFunction: (value) {
               print(value);

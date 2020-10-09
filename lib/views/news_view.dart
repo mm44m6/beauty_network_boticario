@@ -14,41 +14,60 @@ class NewsView extends StatefulWidget {
 }
 
 class _NewsViewState extends State<NewsView> {
+  Future<List<PostModel>> _news;
+
   @override
   void initState() {
+    _news = widget._newsController.getAllNews();
     super.initState();
+  }
+
+  void _handleChanges() {
+    setState(() {
+      _news = widget._newsController.getAllNews();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBarWidget(title: 'Novidades Boticario'),
-      body: SingleChildScrollView(
-        child: FutureBuilder(
-          future: widget._newsController.getAllNews(),
-          builder:
-              (BuildContext context, AsyncSnapshot<List<PostModel>> snapshot) {
-            if (snapshot.hasError) {
-              return Text('${snapshot.error}');
-            }
+      body: RefreshIndicator(
+        displacement: 50,
+        onRefresh: () {
+          _handleChanges();
+          return _news;
+        },
+        child: SingleChildScrollView(
+          child: FutureBuilder(
+            future: _news,
+            builder: (BuildContext context,
+                AsyncSnapshot<List<PostModel>> snapshot) {
+              if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
 
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Container(
+                  margin: EdgeInsets.all(10),
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
 
-            if (snapshot.hasData) {
-              return new ListView(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                children: snapshot.data.map(
-                  (post) {
-                    return NewsPostCardWidget(post: post);
-                  },
-                ).toList(),
-              );
-            }
-            return Container();
-          },
+              if (snapshot.hasData) {
+                return new ListView(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  children: snapshot.data.map(
+                    (post) {
+                      return NewsPostCardWidget(post: post);
+                    },
+                  ).toList(),
+                );
+              }
+              return Container();
+            },
+          ),
         ),
       ),
     );

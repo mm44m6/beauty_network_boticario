@@ -18,17 +18,17 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  Future<QuerySnapshot> posts;
+  Future<QuerySnapshot> _posts;
 
   @override
   void initState() {
-    posts = widget._homeController.getRecentPosts();
+    _posts = widget._homeController.getRecentPosts();
     super.initState();
   }
 
   void _handleChanges() {
     setState(() {
-      posts = widget._homeController.getRecentPosts();
+      _posts = widget._homeController.getRecentPosts();
     });
   }
 
@@ -41,7 +41,7 @@ class _HomeViewState extends State<HomeView> {
       body: RefreshIndicator(
         onRefresh: () {
           _handleChanges();
-          return posts;
+          return _posts;
         },
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
@@ -64,7 +64,7 @@ class _HomeViewState extends State<HomeView> {
                   ),
                 ),
                 FutureBuilder(
-                  future: posts,
+                  future: _posts,
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.hasError) {
@@ -72,7 +72,10 @@ class _HomeViewState extends State<HomeView> {
                     }
 
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return Container(
+                        margin: EdgeInsets.all(10),
+                        child: Center(child: CircularProgressIndicator()),
+                      );
                     }
 
                     if (snapshot.hasData) {

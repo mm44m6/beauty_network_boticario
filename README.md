@@ -25,6 +25,4 @@ Também utilizei de principios de Clean Architecture, utilizando Injeção de de
 
 A maioria dos testes são testes de widgets, e estou utilizando Mockito para mock das dependencias externas à classe.
 
-A splashscreen foi feita utilizando as ferramentas nativas de splashscreen especificas de cada plataforma. :) (Falando em splashcreen, nela tem minha dog que é a Cookie e minha gatinha, que é a Lola!).
-
-Espero que gostem, obrigada! 
+A splashscreen foi feita utilizando as ferramentas nativas de splashscreen especificas de cada plataforma. :) (Falando em splashcreen, nela tem minha dog que é a Cookie).
